@@ -33,4 +33,4 @@ function drawGrid(cols, rows, radius){
         }
     }
 }
-drawGrid(6,6,50)
+drawGrid(50,50,50)
