@@ -19,4 +19,18 @@ function drawHexagon(cx, cy, radius){
 
 }   
 
-drawHexagon(300, 300, 80)
+// drawHexagon(300, 300, 80)
+
+function drawGrid(cols, rows, radius){
+    const spacingX = radius * Math.sqrt(3)
+    const spacingY = radius * 1.5
+    for (let row = 0; row <rows; row++){
+        for (let col = 0; col<cols; col ++){
+            const offset = (row % 2)*(spacingX/2)
+            const x =col * spacingX+offset
+            const y =row * spacingY
+            drawHexagon(x, y, radius)
+        }
+    }
+}
+drawGrid(6,6,50)
