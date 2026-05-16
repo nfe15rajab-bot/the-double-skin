@@ -14,11 +14,11 @@ function drawHexagon(cx, cy, radius){
     const dx = cx - mouseX
     const dy = cy - mouseY
     const dist = Math.sqrt(dx * dx  + dy * dy)
-    const sigma = 50
+    const sigma = 600
     const falloff = Math.exp(-(dist * dist)/(2* sigma * sigma))
     const scale = Math.min(1, Math.max(0.1, 1-falloff * 0.9))
     const scaledRadius = radius * scale
-
+    ctx.lineWidth = 0.5
 
     ctx.beginPath()
             for(let i=0; i<6 ; i++){
@@ -32,6 +32,9 @@ function drawHexagon(cx, cy, radius){
 
     ctx.closePath()
     ctx.stroke()
+    const alpha = (1 - scale) * 0.95
+    ctx.fillStyle = `rgba(230, 211, 42, ${alpha})`
+    ctx.fill()
 }
 function drawGrid(cols, rows, radius){
     const spacingX = radius * Math.sqrt(3)
@@ -50,7 +53,8 @@ function drawGrid(cols, rows, radius){
 
 function animate() {
     ctx.clearRect(0, 0, canvas.width, canvas.height)
-    drawGrid(6, 6, 50)
+    const sizeGrid=70
+    drawGrid(sizeGrid, sizeGrid, sizeGrid)
     requestAnimationFrame(animate)
 }
 animate()
