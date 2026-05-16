@@ -1,5 +1,5 @@
 const canvas = document.getElementById('canvas')
-const ctx = canvas.getContext('2d')
+const pen = canvas.getContext('2d')
 
 let mouseX = 0
 let mouseY = 0
@@ -18,23 +18,23 @@ function drawHexagon(cx, cy, radius){
     const falloff = Math.exp(-(dist * dist)/(2* sigma * sigma))
     const scale = Math.min(1, Math.max(0.1, 1-falloff * 0.9))
     const scaledRadius = radius * scale
-    ctx.lineWidth = 0.5
+    pen.lineWidth = 0.5
 
-    ctx.beginPath()
+    pen.beginPath()
             for(let i=0; i<6 ; i++){
                 const angle = (Math.PI / 180) * (60 * i - 30)
                 const x = cx + scaledRadius * Math.cos(angle)
                 const y = cy + scaledRadius * Math.sin(angle)
-                if (i === 0 ) ctx.moveTo(x,y)
-                else ctx.lineTo(x, y)
+                if (i === 0 ) pen.moveTo(x,y)
+                else pen.lineTo(x, y)
     }
 
 
-    ctx.closePath()
-    ctx.stroke()
+    pen.closePath()
+    pen.stroke()
     const alpha = (1 - scale) * 0.95
-    ctx.fillStyle = `rgba(230, 211, 42, ${alpha})`
-    ctx.fill()
+    pen.fillStyle = `rgba(230, 211, 42, ${alpha})`
+    pen.fill()
 }
 function drawGrid(cols, rows, radius){
     const spacingX = radius * Math.sqrt(3)
@@ -52,7 +52,7 @@ function drawGrid(cols, rows, radius){
     
 
 function animate() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height)
+    pen.clearRect(0, 0, canvas.width, canvas.height)
     const sizeGrid=70
     drawGrid(sizeGrid, sizeGrid, sizeGrid)
     requestAnimationFrame(animate)
