@@ -1,11 +1,6 @@
 const canvas = document.getElementById('canvas')
 const ctx = canvas.getContext('2d')
 
-// ctx.beginPath()
-// ctx.arc(300, 300, 50, 0, Math.PI * 2)
-// ctx.stroke()
-// drawHexagon(300, 300, 80)
-
 let mouseX = 0
 let mouseY = 0
 
@@ -19,18 +14,17 @@ function drawHexagon(cx, cy, radius){
     const dx = cx - mouseX
     const dy = cy - mouseY
     const dist = Math.sqrt(dx * dx  + dy * dy)
-    const strength = 200
-    const falloff =strength / (dist + 1)
-    const offsetX = (dx / dist)*falloff
-    const offsetY = (dy / dist)*falloff
-    const nx = cx + offsetX
-    const ny = cy + offsetY
+    const sigma = 50
+    const falloff = Math.exp(-(dist * dist)/(2* sigma * sigma))
+    const scale = Math.min(1, Math.max(0.1, 1-falloff * 0.9))
+    const scaledRadius = radius * scale
+
 
     ctx.beginPath()
             for(let i=0; i<6 ; i++){
                 const angle = (Math.PI / 180) * (60 * i - 30)
-                const x = nx + radius * Math.cos(angle)
-                const y = ny + radius * Math.sin(angle)
+                const x = cx + scaledRadius * Math.cos(angle)
+                const y = cy + scaledRadius * Math.sin(angle)
                 if (i === 0 ) ctx.moveTo(x,y)
                 else ctx.lineTo(x, y)
     }
