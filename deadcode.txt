@@ -1,0 +1,36 @@
+// function drawStar(cx, cy, radius, starAngle){
+//     const corners = []
+//     for (let i=0; i<6; i++){
+//         const angle =(Math.PI/180)*(60 * i - 30)
+//         corners.push({
+//             x: cx + radius *Math.cos(angle),
+//             y: cy + radius *Math.sin(angle)
+//         })
+
+//     }
+//     //pen.beginPath()
+//     for (let i = 0; i<6; i++){
+//         const a =corners[i]
+//         const b =corners[(i+1)%6]
+//         const p1 ={
+//             x: a.x + (b.x - a.x) * starAngle,
+//             y: a.y + (b.y - a.y) * starAngle
+//         }
+//         const p2 ={
+//             x: a.x + (b.x - a.x) * (1 - starAngle),
+//             y: a.y + (b.y - a.y) * (1 - starAngle)
+//         }
+
+//         const next = corners [(i + 2) % 6]
+//         const p3 = {
+//             x: next.x + (b.x - next.x) * starAngle,
+//             y: next.y + (b.y - next.y) * starAngle
+//         }
+//         pen.beginPath()
+//         pen.moveTo(p1.x, p1.y)
+//         pen.lineTo(p2.x, p2.y)
+//         pen.lineTo(p3.x, p3.y)
+//         pen.closePath()
+//         pen.stroke()
+// }
+//     }
