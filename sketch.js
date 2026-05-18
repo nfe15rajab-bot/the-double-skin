@@ -38,6 +38,11 @@ document.getElementById('starSlider').addEventListener('input', function() {
 
 })
 
+document.getElementById('colorPicker').addEventListener('input', function(){
+    surfaceColor = this.value
+})
+
+let surfaceColor = 'rgb (147, 204, 254)'
 
 
 canvas.addEventListener('mousemove', function(e){
@@ -148,7 +153,7 @@ function drawGrid(cols, rows, radius){
     
 function animate() {
     pen.clearRect(0, 0, canvas.width, canvas.height)
-    pen.fillStyle = 'rgb(147, 204, 254)'
+    pen.fillStyle = surfaceColor
     pen.fillRect(0, 0, canvas.width, canvas.height)
 
     //necessary to cut the hexagonal part

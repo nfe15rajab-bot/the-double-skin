@@ -12,7 +12,7 @@
         background:white; box-shadow:0px 2px 8px rgba(0,0,0,0.9);">
             Mode: Hex
         </button>
-        <div id="controls" style="position:fixed; bottom:20px; left:40px; z-index:25px; background:rgba(0,0,0,0.3); padding:16px; border-radius:15px; color:white; font-family:Arial; font-size:35px; ">
+        <div id="controls" style="position:fixed; bottom:20px; left:40px; z-index:25; background:rgba(0,0,0,0.3); padding:16px; border-radius:15px; color:white; font-family:Arial; font-size:35px; ">
             <div>
                 <label>Sigma: <span id ="sigmaVal">1000</span></label><br>
                 <input type ="range" min="50" max="1500" value = "1000" id="sigmaSlider" style ="width:800px; height:60px;" >
@@ -25,7 +25,12 @@
                 <label> Star angle : <span id="starVal">0.5</span></label><br>
                 <input type ="range" min="1" max="99" value="50" id="starSlider" style ="width:800px; height:60px;" >
             </div>
+            <div style=margin-top:10px">
+                <label>Surface color</label><br>
+                <input type="color" id="colorPicker" value="#f865ab" style="width:200px; height:80px; cursor:pointer; border:none; border-radius:10px;">
+            </div>
         </div>
+        
         <script src="sketch.js"></script>
         
     </body>
