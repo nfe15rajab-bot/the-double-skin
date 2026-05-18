@@ -42,6 +42,8 @@ document.getElementById('colorPicker').addEventListener('input', function(){
     surfaceColor = this.value
 })
 
+document.getElementById('exportBtn').addEventListener('click', exportSVG)
+
 let surfaceColor = 'rgb (147, 204, 254)'
 
 
@@ -150,7 +152,41 @@ function drawGrid(cols, rows, radius){
 
     
 
-    
+function exportSVG(){
+    const spacingX = radius * Math.sqrt(3)
+    const spacingY = radius * 1.5
+    const cols = Math.ceil(canvas.width / spacingX) + 1
+    const rows = Math.ceil(canvas.height / spacingY) + 1
+
+    let paths = ''
+
+    for (let row = 0; row < rows ; row ++){
+        for (let col = 0; col<cols; col ++){
+            const offset = (row%2)*(spacingX/2)
+            const cx = col * spacingX + offset
+            const cy = row * spacingY
+
+            let d= ''
+            for (let i=0; i<6; i++){
+                const angle = (Math.PI/180)*(60*i-30)
+                const x = (cx + radius * Math.cos(angle)).toFixed(2)
+                const y = (cy + radius * Math.sin(angle)).toFixed(2)
+                d += i === 0? `M ${x} ${y}` : `L ${x} ${y}`
+            }
+            d+= 'Z'
+            paths += `<path d="${d}" fill="${surfaceColor}" stoke="white" stroke-width="2"/>\n`
+        }
+    }
+    const svg = `<svg xmlns= "http://www.w3.org/2000/svg" width="${canvas.width}" height="${canvas.height}">\n${paths}</svg>`
+    const blob =  new Blob([svg], { type: 'image/svg+xml'})
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href=url
+    a.download = 'the-double-skin.svg'
+    a.click()
+    URL.revokeObjectURL(url)
+}
+
 function animate() {
     pen.clearRect(0, 0, canvas.width, canvas.height)
     pen.fillStyle = surfaceColor
