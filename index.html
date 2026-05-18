@@ -6,9 +6,26 @@
     </head>
     <body>
         <canvas id="canvas"></canvas>
-        <button id="toggle" style="position:fixed; top:20px; left:20px; z-index:10; padding:50px 100px; font-size:50px; cursor:pointer; border:none; border-radius:8px; background:white; box-shadow:0px 2px 8px rgba(0,0,0,0.2);">
+        <button id="toggle" style="position:fixed; top:20px; left:20px; 
+        z-index:10; padding:50px 100px; font-size:50px; cursor:pointer; 
+        border:none; border-radius:8px; 
+        background:white; box-shadow:0px 2px 8px rgba(0,0,0,0.9);">
             Mode: Hex
         </button>
+        <div id="controls" style="position:fixed; bottom:20px; left:40px; z-index:25px; background:rgba(0,0,0,0.3); padding:16px; border-radius:15px; color:white; font-family:Arial; font-size:35px; ">
+            <div>
+                <label>Sigma: <span id ="sigmaVal">1000</span></label><br>
+                <input type ="range" min="50" max="1500" value = "1000" id="sigmaSlider" style ="width:800px; height:60px;" >
+            </div>
+            <div style ="margin-top:50px">
+                <label> Radius:<span id="radiusVal">200</span></label><br>
+                <input type = "range" min = "20" max = "300" value = "200" id="radiusSlider" style ="width:800px; height:20px;" >
+            </div>
+            <div style ="margin-top:50px" id="starControls">
+                <label> Star angle : <span id="starVal">0.5</span></label><br>
+                <input type ="range" min="1" max="99" value="50" id="starSlider" style ="width:800px; height:60px;" >
+            </div>
+        </div>
         <script src="sketch.js"></script>
         
     </body>

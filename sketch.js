@@ -6,6 +6,10 @@ let mode = 'hex'
 let mouseX = 0
 let mouseY = 0
 
+let sigma = 1000
+let radius = 600
+let starAngle = 0.5
+
 canvas.width = window.innerWidth
 canvas.height= window.innerHeight
 
@@ -17,16 +21,24 @@ document.getElementById('toggle').addEventListener('click', function(){
     mode = mode ==='hex' ? 'star' : 'hex'
     this.textContent = mode === 'hex' ? 'Mode: Hex' : 'Mode: Star'
 })
-// const radius = 30
-// const col = 20
-// const rows = 15
-// // canvas.width = cols * radius * Math.sqrt(3)
-// // canvas.height = rows * radius * 1.5
+
+document.getElementById('sigmaSlider').addEventListener('input', function(){
+    sigma = parseFloat(this.value)
+    document.getElementById('sigmaVal').textContent = this.value
+})
+
+document.getElementById('radiusSlider').addEventListener('input', function(){
+    radius = parseFloat(this.value)
+    document.getElementById('radiusVal').textContent = this.value
+})
+
+document.getElementById('starSlider').addEventListener('input', function() {
+    starAngle = parseFloat(this.value)/100
+    document.getElementById('starVal').textContent = (starAngle).toFixed(2)
+
+})
 
 
-
-// let mouseX = 0
-// let mouseY = 0
 
 canvas.addEventListener('mousemove', function(e){
     const rect = canvas.getBoundingClientRect()
@@ -82,11 +94,10 @@ function drawHexagon(cx, cy, radius){
     const dx = cx - mouseX
     const dy = cy - mouseY
     const dist = Math.sqrt(dx * dx  + dy * dy)
-    const sigma = 600
     const falloff = Math.exp(-(dist * dist)/(2* sigma * sigma))
 
     if (mode==='star'){
-        const d = Math.min(radius, Math.max(radius*0.1, falloff * radius))
+        const d = Math.min(radius, Math.max(radius*0.1, falloff * radius* starAngle))
         pen.beginPath()
         drawStarHex(cx, cy, radius, d)
     } else {
@@ -131,6 +142,7 @@ function drawGrid(cols, rows, radius){
         }
     }
 }
+
     
 
     
@@ -142,7 +154,6 @@ function animate() {
     //necessary to cut the hexagonal part
     pen.globalCompositeOperation = 'destination-out'
     //const sizeGrid=50
-    const radius = 200
     const cols = Math.ceil(canvas.width / (radius * Math.sqrt(3))) + 1
     const rows = Math.ceil(canvas.height / (radius * 1.5)) + 1
 
