@@ -169,7 +169,7 @@ function drawGrid(cols, rows, radius){
             const scaledRadius=radius*scale
 
             const d = Math.min(radius, Math.max(radius * 0.1, falloff * radius * starAngle))
-            hexagon.push({ cx: x, cy: y, r:scaledRadius, d:d})
+            hexagons.push({ cx: x, cy: y, r:scaledRadius, d:d})
 
             drawHexagon(x, y, radius, mode)
         }
@@ -216,11 +216,13 @@ function exportSVG(){
                 points.push(corners[i])
                 points.push(mids[i])
             }
-            for (let i=0; i<point.length; i++){
+            for (let i=0; i<points.length; i++){
                 d +=  i === 0 ? `M ${points[i].x.toFixed(2)}${points[i].y.toFixed(2)}`
                             : `L${points[i].x.toFixed(2)}${points[i].y.toFixed(2)}`
-                            d += 'Z'
-            }
+                
+                }
+                d += 'Z'
+            
         }
         else {
         for (let i=0; i<6; i++){
@@ -231,7 +233,7 @@ function exportSVG(){
         }
         d+= 'Z'
     }
-        paths += `<path d="${d}" fill="${surfaceColor}" stoke="white" stroke-width="2"/>\n`
+        paths += `<path d="${d}" fill="${surfaceColor}" stroke="white" stroke-width="2"/>\n`
     }
 
     
