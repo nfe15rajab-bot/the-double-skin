@@ -57,7 +57,7 @@ document.getElementById('freezeBtn').addEventListener('click', function(){
     this.textContent = frozen ?' ▶️ Unfreeze' : '❄️ Freeze'
 })
 
-let surfaceColor = 'rgb (147, 204, 254)'
+let surfaceColor = 'rgb(147, 204, 254)'
 
 
 canvas.addEventListener('mousemove', function(e){
@@ -217,8 +217,8 @@ function exportSVG(){
                 points.push(mids[i])
             }
             for (let i=0; i<points.length; i++){
-                d +=  i === 0 ? `M ${points[i].x.toFixed(2)}${points[i].y.toFixed(2)}`
-                            : `L${points[i].x.toFixed(2)}${points[i].y.toFixed(2)}`
+                d += i === 0 ? `M ${points[i].x.toFixed(2)} ${points[i].y.toFixed(2)}`
+                            :  `L ${points[i].x.toFixed(2)} ${points[i].y.toFixed(2)}`
                 
                 }
                 d += 'Z'
@@ -233,7 +233,7 @@ function exportSVG(){
         }
         d+= 'Z'
     }
-        paths += `<path d="${d}" fill="${surfaceColor}" stroke="white" stroke-width="2"/>\n`
+        paths += `<path d="${d}" fill="white" fill-rule="nonzero" stroke="white" stroke-width="2"/>\n`
     }
 
     
@@ -244,7 +244,9 @@ function exportSVG(){
     //     //     const cy = row * spacingY
 
     
-    const svg = `<svg xmlns= "http://www.w3.org/2000/svg" width="${canvas.width}" height="${canvas.height}">\n${paths}</svg>`
+    const svg = `<svg xmlns= "http://www.w3.org/2000/svg" width="${canvas.width}" height="${canvas.height}">
+    <rect width ="100%" height ="100%" fill ="${surfaceColor}"/>
+    ${paths}</svg>`
     const blob =  new Blob([svg], { type: 'image/svg+xml'})
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
