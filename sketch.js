@@ -168,7 +168,8 @@ function drawGrid(cols, rows, radius){
             const scale = Math.min(1, Math.max(0.1, 1-falloff*0.9))
             const scaledRadius=radius*scale
 
-            hexagons.push({cx: x, cy:y, r:scaledRadius})
+            const d = Math.min(radius, Math.max(radius * 0.1, falloff * radius * starAngle))
+            hexagon.push({ cx: x, cy: y, r:scaledRadius, d:d})
 
             drawHexagon(x, y, radius, mode)
         }
@@ -189,8 +190,39 @@ function exportSVG(){
         let d= ''
         if (mode == 'star'){
             const corners = []
-            for (let i=0; i<=)
+            for (let i=0; i<=6; i++){
+                const angle =(Math.PI/180)*(60*i-30)
+                corners.push({
+                    x: hex.cx + hex.r * Math.cos(angle),
+                    y: hex.cy + hex.r * Math.sin(angle)
+                })
+            }
+            const mids = []
+            for (let i=0; i<6; i++){
+                const a = corners[i]
+                const b = corners[(i+1)%6]
+                const mx=(a.x + b.x)/2
+                const my=(a.y+b.y)/2
+                const ddx = hex.cx-mx
+                const ddy=hex.cy-my
+                const dist =Math.sqrt(ddx*ddx + ddy*ddy)
+                mids.push({
+                    x: mx + (ddx/dist)*hex.d,
+                    y: my + (ddy/dist)*hex.d
+                })
+            }
+            const points = []
+            for (let i=0; i<6; i++){
+                points.push(corners[i])
+                points.push(mids[i])
+            }
+            for (let i=0; i<point.length; i++){
+                d +=  i === 0 ? `M ${points[i].x.toFixed(2)}${points[i].y.toFixed(2)}`
+                            : `L${points[i].x.toFixed(2)}${points[i].y.toFixed(2)}`
+                            d += 'Z'
+            }
         }
+        else {
         for (let i=0; i<6; i++){
             const angle = (Math.PI/180)*(60*i-30)
             const x = (hex.cx + hex.r * Math.cos(angle)).toFixed(2)
@@ -198,8 +230,10 @@ function exportSVG(){
             d += i === 0? `M ${x} ${y}` : `L ${x} ${y}`
         }
         d+= 'Z'
+    }
         paths += `<path d="${d}" fill="${surfaceColor}" stoke="white" stroke-width="2"/>\n`
     }
+
     
     // for (let row = 0; row < rows ; row ++){
     //     // for (let col = 0; col<cols; col ++){
