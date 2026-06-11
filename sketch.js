@@ -117,7 +117,8 @@ function drawHexagon(cx, cy, radius){
     const falloff = Math.exp(-(dist * dist)/(2* sigma * sigma))
 
     if (mode==='star'){
-        const d = Math.min(radius, Math.max(radius*0.1, falloff * radius* starAngle))
+        const maxD = radius + Math.sqrt(3)/2*0.9
+        const d = Math.min(maxD, Math.max(radius*0.1, falloff * radius* starAngle))
         pen.beginPath()
         drawStarHex(cx, cy, radius, d)
     } else {
@@ -167,8 +168,10 @@ function drawGrid(cols, rows, radius){
             const falloff = Math.exp(-(dist*dist)/(2*sigma*sigma))
             const scale = Math.min(1, Math.max(0.1, 1-falloff*0.9))
             const scaledRadius=radius*scale
+            
+            const maxD = scaledRadius * Math.sqrt(3)/2*0.9
 
-            const d = Math.min(radius, Math.max(radius * 0.1, falloff * radius * starAngle))
+            const d = Math.min(maxD, Math.max(radius * 0.1, falloff * radius * starAngle))
             hexagons.push({ cx: x, cy: y, r:scaledRadius, d:d})
 
             drawHexagon(x, y, radius, mode)
@@ -233,7 +236,7 @@ function exportSVG(){
         }
         d+= 'Z'
     }
-        paths += `<path d="${d}" fill="white" fill-rule="nonzero" stroke="white" stroke-width="2"/>\n`
+        paths += `<path d="${d}" fill="white" fill-rule="nonzero" stroke="white" stroke-width="0.5"/>\n`
     }
 
     
