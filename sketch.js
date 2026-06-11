@@ -2,7 +2,7 @@ const canvas = document.getElementById('canvas')
 const pen = canvas.getContext('2d')
 let mode = 'hex'
 
-
+let frozen = false
 let mouseX = 0
 let mouseY = 0
 
@@ -10,6 +10,7 @@ let sigma = 1000
 let radius = 600
 let starAngle = 0.5
 
+let hexagons = []
 canvas.width = window.innerWidth
 canvas.height= window.innerHeight
 
@@ -17,6 +18,13 @@ window.addEventListener('resize', () => {
     canvas.width = window.innerWidth
     canvas.height = window.innerHeight
 })
+
+window.addEventListener("contextmenu", function(e){
+    e.preventDefault()
+    frozen=!frozen
+    document.getElementById("freezeBtn").textContent=frozen ? 'Unfreeze': "Freeze"
+})
+
 document.getElementById('toggle').addEventListener('click', function(){
     mode = mode ==='hex' ? 'star' : 'hex'
     this.textContent = mode === 'hex' ? 'Mode: Hex' : 'Mode: Star'
@@ -43,6 +51,11 @@ document.getElementById('colorPicker').addEventListener('input', function(){
 })
 
 document.getElementById('exportBtn').addEventListener('click', exportSVG)
+
+document.getElementById('freezeBtn').addEventListener('click', function(){
+    frozen = !frozen
+    this.textContent = frozen ?' ▶️ Unfreeze' : '❄️ Freeze'
+})
 
 let surfaceColor = 'rgb (147, 204, 254)'
 
@@ -139,12 +152,24 @@ function drawHexagon(cx, cy, radius){
 function drawGrid(cols, rows, radius){
     const spacingX = radius * Math.sqrt(3)
     const spacingY = radius * 1.5
+    hexagons = []
 
     for (let row = 0; row <rows; row++){
         for (let col = 0; col<cols; col ++){
             const offset = (row % 2)*(spacingX/2)
             const x =col * spacingX+offset
             const y =row * spacingY
+
+            const dx = x- mouseX
+            const dy = y- mouseY
+
+            const dist = Math.sqrt (dx * dx + dy * dy)
+            const falloff = Math.exp(-(dist*dist)/(2*sigma*sigma))
+            const scale = Math.min(1, Math.max(0.1, 1-falloff*0.9))
+            const scaledRadius=radius*scale
+
+            hexagons.push({cx: x, cy:y, r:scaledRadius})
+
             drawHexagon(x, y, radius, mode)
         }
     }
@@ -153,30 +178,36 @@ function drawGrid(cols, rows, radius){
     
 
 function exportSVG(){
-    const spacingX = radius * Math.sqrt(3)
-    const spacingY = radius * 1.5
-    const cols = Math.ceil(canvas.width / spacingX) + 1
-    const rows = Math.ceil(canvas.height / spacingY) + 1
+    // const spacingX = radius * Math.sqrt(3)
+    // const spacingY = radius * 1.5
+    // const cols = Math.ceil(canvas.width / spacingX) + 1
+    // const rows = Math.ceil(canvas.height / spacingY) + 1
 
     let paths = ''
-
-    for (let row = 0; row < rows ; row ++){
-        for (let col = 0; col<cols; col ++){
-            const offset = (row%2)*(spacingX/2)
-            const cx = col * spacingX + offset
-            const cy = row * spacingY
-
-            let d= ''
-            for (let i=0; i<6; i++){
-                const angle = (Math.PI/180)*(60*i-30)
-                const x = (cx + radius * Math.cos(angle)).toFixed(2)
-                const y = (cy + radius * Math.sin(angle)).toFixed(2)
-                d += i === 0? `M ${x} ${y}` : `L ${x} ${y}`
-            }
-            d+= 'Z'
-            paths += `<path d="${d}" fill="${surfaceColor}" stoke="white" stroke-width="2"/>\n`
+    for (const hex of hexagons){
+        
+        let d= ''
+        if (mode == 'star'){
+            const corners = []
+            for (let i=0; i<=)
         }
+        for (let i=0; i<6; i++){
+            const angle = (Math.PI/180)*(60*i-30)
+            const x = (hex.cx + hex.r * Math.cos(angle)).toFixed(2)
+            const y = (hex.cy + hex.r * Math.sin(angle)).toFixed(2)
+            d += i === 0? `M ${x} ${y}` : `L ${x} ${y}`
+        }
+        d+= 'Z'
+        paths += `<path d="${d}" fill="${surfaceColor}" stoke="white" stroke-width="2"/>\n`
     }
+    
+    // for (let row = 0; row < rows ; row ++){
+    //     // for (let col = 0; col<cols; col ++){
+    //     //     const offset = (row%2)*(spacingX/2)
+    //     //     const cx = col * spacingX + offset
+    //     //     const cy = row * spacingY
+
+    
     const svg = `<svg xmlns= "http://www.w3.org/2000/svg" width="${canvas.width}" height="${canvas.height}">\n${paths}</svg>`
     const blob =  new Blob([svg], { type: 'image/svg+xml'})
     const url = URL.createObjectURL(blob)
@@ -188,7 +219,8 @@ function exportSVG(){
 }
 
 function animate() {
-    pen.clearRect(0, 0, canvas.width, canvas.height)
+    if (!frozen){
+        pen.clearRect(0, 0, canvas.width, canvas.height)
     pen.fillStyle = surfaceColor
     pen.fillRect(0, 0, canvas.width, canvas.height)
 
@@ -204,6 +236,8 @@ function animate() {
     //pen.fillStyle='rgb(239, 182, 182)'
     pen.strokeStyle='rgb(25, 5, 147)'
     drawGrid(cols, rows, radius)
+    
+    }
     requestAnimationFrame(animate)
 }
 animate()
