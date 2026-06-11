@@ -57,7 +57,7 @@ document.getElementById('freezeBtn').addEventListener('click', function(){
     this.textContent = frozen ?' ▶️ Unfreeze' : '❄️ Freeze'
 })
 
-let surfaceColor = 'rgb(147, 204, 254)'
+let surfaceColor = 'rgb(0, 0, 0)'
 
 
 canvas.addEventListener('mousemove', function(e){
@@ -169,7 +169,7 @@ function drawGrid(cols, rows, radius){
             const scale = Math.min(1, Math.max(0.1, 1-falloff*0.9))
             const scaledRadius=radius*scale
             
-            const maxD = scaledRadius * Math.sqrt(3)/2*0.9
+            const maxD = scaledRadius * Math.sqrt(3)/2 * 0.9
 
             const d = Math.min(maxD, Math.max(radius * 0.1, falloff * radius * starAngle))
             hexagons.push({ cx: x, cy: y, r:scaledRadius, d:d})
@@ -236,7 +236,7 @@ function exportSVG(){
         }
         d+= 'Z'
     }
-        paths += `<path d="${d}" fill="white" fill-rule="nonzero" stroke="white" stroke-width="0.5"/>\n`
+        paths += `<path d="${d}" fill="white" fill-rule="nonzero" />\n`
     }
 
     
@@ -246,9 +246,9 @@ function exportSVG(){
     //     //     const cx = col * spacingX + offset
     //     //     const cy = row * spacingY
 
-    
-    const svg = `<svg xmlns= "http://www.w3.org/2000/svg" width="${canvas.width}" height="${canvas.height}">
-    <rect width ="100%" height ="100%" fill ="${surfaceColor}"/>
+    const exportScale = 0.5
+    const svg = `<svg xmlns= "http://www.w3.org/2000/svg" width="${canvas.width*exportScale}" height="${canvas.height*exportScale}" viewBox ="0 0 ${canvas.width} ${canvas.height}">
+    <rect width ="100%" height ="100%" fill ="rgb(248,23, 90)"/>
     ${paths}</svg>`
     const blob =  new Blob([svg], { type: 'image/svg+xml'})
     const url = URL.createObjectURL(blob)
