@@ -2,40 +2,119 @@
 <html>
     <head>
         <title> The double skin </title>
+        <style>
+            *{
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
+            body {
+                background: #000;
+                overflow: hidden;
+            }
+            #controls  
+                {
+                position: fixed;
+                top: 20px;
+                left:20px;
+                z-index:25;
+                background: rgba(20, 20, 30, 0.85);
+                padding: 20px;
+                border-radius: 12px;
+                color: #fff;
+                font-family: Arial, sans-serif;
+                font-size:13px;
+                width:220px;
+                backdrop-filter:blur(6px);
+            }
+        
+
+            #toggle {
+                display: block;
+                width: 100%;
+                margin-bottom:16px;
+                padding:8px;
+                font-size:13px;
+                cursor:pointer;
+                border:1px solid rgba(255,255,255,0.6);
+                border-radius: 8px;
+                background:rgba(255, 255, 255, 0,1);
+                color: black;
+            }
+            .control-group {
+                margin-bottom:14px;
+            }
+
+            label {
+                display:block;
+                margin-bottom:4px;
+                color:rgba(255, 255, 255, 0.3)
+
+            }
+            input [type="range"]{
+                width:100%;
+                height:4px;
+                cursor:pointer;
+                accent-color: #93c5fd;
+            }
+            input [type="color"]{
+                width:100%;
+                height:36px;
+                cursor:pointer;
+                border:none;
+                border-radius:6px;
+                background:none;
+            }
+            .btn {
+                width:100%;
+                height:36px;
+                font-size:13px;
+                cursor:pointer;
+                border:1px solid rgba(255, 255, 255, 0.2);
+                border-radius:8px;
+                background:rgba(255, 255, 255, 0.1);
+                color: white;
+                margin-top: 8px;
+
+
+            }
+            .btn:hover{
+                background: (255, 255, 255, 0.2);
+
+            }
+            #starControls {
+                display:none;
+            }
+        </style>
 
     </head>
     <body>
         <canvas id="canvas"></canvas>
-        <button id="toggle" style="position:fixed; top:20px; left:20px; 
-        z-index:10; padding:50px 100px; font-size:50px; cursor:pointer; 
-        border:none; border-radius:8px; 
-        background:white; box-shadow:0px 2px 8px rgba(0,0,0,0.9);">
-            Mode: Hex
-        </button>
-        <div id="controls" style="position:fixed; bottom:20px; left:40px; z-index:25; background:rgba(0,0,0,0.3); padding:16px; border-radius:15px; color:white; font-family:Arial; font-size:35px; ">
-            <div>
+        <div id="controls" >
+            <button id = "toggle"> Mode: Hex</button>
+            <div class = "control-group">
                 <label>Sigma: <span id ="sigmaVal">1000</span></label><br>
-                <input type ="range" min="50" max="1500" value = "1000" id="sigmaSlider" style ="width:800px; height:60px;" >
+                <input type ="range" min="50" max="1500" value = "1000" id="sigmaSlider" >
             </div>
-            <div style ="margin-top:50px">
+            <div class = "control-group">
                 <label> Radius:<span id="radiusVal">200</span></label><br>
-                <input type = "range" min = "20" max = "300" value = "200" id="radiusSlider" style ="width:800px; height:20px;" >
+                <input type = "range" min = "20" max = "300" value = "200" id="radiusSlider" >
             </div>
-            <div style ="margin-top:50px" id="starControls">
+            <div class = "control-group" id="starControls">
                 <label> Star angle : <span id="starVal">0.5</span></label><br>
-                <input type ="range" min="1" max="99" value="50" id="starSlider" style ="width:800px; height:60px;" >
+                <input type ="range" min="1" max="99" value="50" id="starSlider" >
             </div>
-            <div style="margin-top:10px">
+            <div class = "control-group">
                 <label>Surface color</label><br>
-                <input type="color" id="colorPicker" value="#f865ab" style="width:80px; height:80px; cursor:pointer; border:none; border-radius:10px;">
+                <input type="color" id="colorPicker" value="#f865ab" >
             </div>
-            <div style="margin-top:50px">
-                <button id = "exportBtn" style = "width:200px; height:80px; font-size:30px; cursor:pointer; border:none; border-radius:8px; background:white;">
+            <div class = "control-group">
+                <button id = "exportBtn" >
                     Export SVG
                 </button>
             </div>
-            <div style="margin-top:50px">
-                <button id="freezeBtn" style="width:200px; height:80px;font-size:30px;cursor:pointer;border:none;border-radius:8px;background:white;">
+            <div class = "control-group">
+                <button id="freezeBtn" class = "btn">
                     ❄️ Freeze
                 </button>
             </div>

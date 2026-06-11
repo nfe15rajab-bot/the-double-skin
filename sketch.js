@@ -102,9 +102,9 @@ function drawStarHex(cx, cy, radius, d){
     for (let i=1 ; i<points.length; i++){
         pen.lineTo(points[i].x, points[i].y)
     }
-    pen.strokeStyle = 'rgb(0, 0, 0)'
+    pen.strokeStyle = 'rgb(146, 28, 28)'
     pen.lineWidth = 5
-    pen.fillStyle =  'rgb(79, 79, 91)'
+    pen.fillStyle =  'rgb(182, 43, 25)'
     pen.closePath()
     pen.stroke()
     pen.fill()
