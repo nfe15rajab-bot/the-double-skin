@@ -104,7 +104,7 @@ function drawStarHex(cx, cy, radius, d){
     }
     pen.strokeStyle = 'rgb(255, 255, 255)'
     pen.lineWidth = 5
-    pen.fillStyle =  'rgba(0, 99, 192, 0.9)'
+    pen.fillStyle =  'rgba(0, 192, 6, 0.9)'
     pen.closePath()
     pen.stroke()
     pen.fill()
@@ -169,10 +169,10 @@ function drawGrid(cols, rows, radius){
             const scale = Math.min(1, Math.max(0.1, 1-falloff*0.9))
             const scaledRadius=radius*scale
             
-            const maxD = scaledRadius * Math.sqrt(3)/2 * 0.9
+            const maxD = radius * Math.sqrt(3)/2 * 0.9
 
             const d = Math.min(maxD, Math.max(radius * 0.1, falloff * radius * starAngle))
-            hexagons.push({ cx: x, cy: y, r:scaledRadius, d:d})
+            hexagons.push({ cx: x, cy: y, r:radius, d:d})
 
             drawHexagon(x, y, radius, mode)
         }
@@ -193,11 +193,11 @@ function exportSVG(){
         let d= ''
         if (mode == 'star'){
             const corners = []
-            for (let i=0; i<=6; i++){
+            for (let i=0; i<6; i++){
                 const angle =(Math.PI/180)*(60*i-30)
                 corners.push({
-                    x: hex.cx + hex.r * Math.cos(angle),
-                    y: hex.cy + hex.r * Math.sin(angle)
+                    x: hex.cx + radius * Math.cos(angle),
+                    y: hex.cy + radius * Math.sin(angle)
                 })
             }
             const mids = []
