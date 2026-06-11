@@ -6,8 +6,8 @@ let frozen = false
 let mouseX = 0
 let mouseY = 0
 
-let sigma = 1000
-let radius = 600
+let sigma = 500
+let radius = 150
 let starAngle = 0.5
 
 let hexagons = []
@@ -57,7 +57,7 @@ document.getElementById('freezeBtn').addEventListener('click', function(){
     this.textContent = frozen ?' ▶️ Unfreeze' : '❄️ Freeze'
 })
 
-let surfaceColor = 'rgb(0, 0, 0)'
+let surfaceColor = 'rgb(255, 255, 255)'
 
 
 canvas.addEventListener('mousemove', function(e){
@@ -102,9 +102,9 @@ function drawStarHex(cx, cy, radius, d){
     for (let i=1 ; i<points.length; i++){
         pen.lineTo(points[i].x, points[i].y)
     }
-    pen.strokeStyle = 'rgb(146, 28, 28)'
+    pen.strokeStyle = 'rgb(255, 255, 255)'
     pen.lineWidth = 5
-    pen.fillStyle =  'rgb(182, 43, 25)'
+    pen.fillStyle =  'rgba(0, 99, 192, 0.9)'
     pen.closePath()
     pen.stroke()
     pen.fill()
