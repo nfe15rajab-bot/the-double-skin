@@ -14,6 +14,9 @@
             }
             #controls  
                 {
+                max-height: 90vh;
+                overflow-y: auto;        
+
                 width : clamp(180px, 16vw, 280px);
                 font-size:clamp(11px, 10vw, 14px);
                 position: fixed;
@@ -101,6 +104,7 @@
     </head>
     <body>
         <script src="suncalc.js"></script>
+        <button class = "btn" id="calculateBtn">Calculate</button>
         <canvas id="canvas"></canvas>
         <div id="controls" >
             <button id = "toggle"> Mode: Hex</button>

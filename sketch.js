@@ -313,11 +313,15 @@ function drawSunArc(lat, lng, date, altitude, azimuth){
     }
 }
 
-document.getElementById('hourSlider').addEventListener('input', updateSolar)
-document.getElementById('dateInput').addEventListener('input', updateSolar)
-document.getElementById('latInput').addEventListener('input', updateSolar)
-document.getElementById('lngInput').addEventListener('input', updateSolar)
-document.getElementById('scaleSlider').addEventListener('input', updateSolar)
+// document.getElementById('hourSlider').addEventListener('input', updateSolar)
+// document.getElementById('dateInput').addEventListener('input', updateSolar)
+// document.getElementById('latInput').addEventListener('input', updateSolar)
+// document.getElementById('lngInput').addEventListener('input', updateSolar)
+// document.getElementById('scaleSlider').addEventListener('input', updateSolar)
+document.getElementById('calculateBtn').addEventListener('click', updateSolar)
+document.getElementById('hourSlider').addEventListener('input', function(){
+    document.getElementById('hourVal').textContent=this.value
+})
 
 function updateSolar(){
     const lat=parseFloat(document.getElementById('latInput').value)
