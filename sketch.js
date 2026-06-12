@@ -104,7 +104,7 @@ function drawStarHex(cx, cy, radius, d){
     }
     pen.strokeStyle = 'rgb(255, 255, 255)'
     pen.lineWidth = 5
-    pen.fillStyle =  'rgba(0, 192, 6, 0.9)'
+    pen.fillStyle =  'rgba(123, 123, 123, 0.09)'
     pen.closePath()
     pen.stroke()
     pen.fill()
@@ -259,6 +259,19 @@ function exportSVG(){
     URL.revokeObjectURL(url)
 }
 
+function updateSolar(){
+    const lat=parseFloat(document.getElementById('latInput').value)
+    const lng=parseFloat(document.getElementById('lngInput').value)
+    const hour=parseInt(document.getElementById('hourSlider').value)
+    const dateVal=document.getElementById('dateInput').value
+    const scale = parseFloat(document.getElementById('scaleSlider'),value)
+    const date = dateVal? new Date(dateVal):new Date()
+    date.setHours(hour, 0, 0, 0)
+
+    const sunPos= SunCalc.getPosition(date, lat, lng)
+    const altitude=(sunPos.altitude*180/Math.Pi).toFixed(1)
+    const azimuth=((sunPos.azimuth+180/Math.Pi)+180).toFixed(1)
+}
 function animate() {
     if (!frozen){
         pen.clearRect(0, 0, canvas.width, canvas.height)
