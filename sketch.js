@@ -343,26 +343,43 @@ function updateSolar(){
 
 
     //void ratio calculations
-    const totalArea = canvas.width * canvas.height
-    const pxToMm=scale
-    const totalAreaMm = totalArea * pxToMm * pxToMm
-    const openingPx = hexagons.reduce((sum, hex)=> {
-        if (mode === 'star') {
-            const hexArea = (3 * Math.sqrt(3)/2)*hex.r*hex.r
-            const triangleArea = 0.5*hex.r*hex.d * Math.sin(Math.PI/3)
-            return sum + hexArea - 6 * triangleArea
+    // const totalArea = canvas.width * canvas.height
+    // const pxToMm=scale
+    // const totalAreaMm = totalArea * pxToMm * pxToMm
+    // const openingPx = hexagons.reduce((sum, hex)=> {
+    //     if (mode === 'star') {
+    //         const hexArea = (3 * Math.sqrt(3)/2)*hex.r*hex.r
+    //         const triangleArea = 0.5*hex.r*hex.d * Math.sin(Math.PI/3)
+    //         return sum + hexArea - 6 * triangleArea
 
-        } else {
-            return sum + (3 * Math.sqrt(3)/2)*hex.r*hex.r
-        }
+    //     } else {
+    //         return sum + (3 * Math.sqrt(3)/2)*hex.r*hex.r
+    //     }
 
-    }, 0)
+    // }, 0)
 
         
         
-    const openingMm2 = openingPx * pxToMm * pxToMm
-    const voidRatio= (openingPx/totalArea * 100).toFixed(1)
-    const openingCm2=(openingMm2/100).toFixed(1)
+    // const openingMm2 = openingPx * pxToMm * pxToMm
+    // const voidRatio= Math.min(100,(openingPx/totalArea * 100)).toFixed(1)
+    // const openingCm2=(openingMm2/100).toFixed(1)
+//void ratio updated
+
+    const spacingX=radius * Math.sqrt(3)
+    const spacingY=radius * 1.5
+    const cellAreaPx = spacingX * spacingY
+    const hexAreaPx=(3*Math.sqrt(3)/2)*radius*radius
+    const voidRatioPerCell = Math.PI * Math.sqrt(3) / 6
+
+    const cols = Math.ceil(canvas.width/spacingX) + 1
+    const rows = Math.ceil(canvas.height/spacingY) + 1
+    const totalCells = cols * rows
+
+    const pxToMm = scale
+    const totalPanelAreaMm2 = totalCells * cellAreaPx * pxToMm *pxToMm
+    const openingAreaMm2 = totalPanelAreaMm2 * voidRatioPerCell
+    const openingCm2 = (openingAreaMm2 / 100).toFixed(1)
+    const voidRatio = (voidRatioPerCell * 100).toFixed(1)
 
     const altRad = sunPos.altitude
     const irradiance = altRad>0 ? (1000*Math.sin(altRad)*(voidRatio/100)).toFixed(1):0
