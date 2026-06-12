@@ -26,11 +26,7 @@ window.addEventListener("contextmenu", function(e){
 })
 
 
-window.getElementById('hourSlider').addEventListener('input', updateSolar)
-window.getElementById('dateInput').addEventListener('input', updateSolar)
-window.getElementById('latInput').addEventListener('input', updateSolar)
-window.getElementById('lngInput').addEventListener('input', updateSolar)
-window.getElementById('scaleSlider').addEventListener('input', updateSolar)
+
 
 document.getElementById('toggle').addEventListener('click', function(){
     mode = mode ==='hex' ? 'star' : 'hex'
@@ -294,7 +290,7 @@ function drawSunArc(lat, lng, date, altitude, azimuth){
     ctx.beginPath()
     let first = true
     for (let h24=0; h24 <= 24; h24++){
-        const d = new DateP(date)
+        const d = new Date(date)
         d.setHours(h24, 0 , 0 , 0)
         const pos = SunCalc.getPosition(d, lat, lng)
         const alt=pos.altitude * 180/Math.PI
@@ -317,18 +313,24 @@ function drawSunArc(lat, lng, date, altitude, azimuth){
     }
 }
 
+document.getElementById('hourSlider').addEventListener('input', updateSolar)
+document.getElementById('dateInput').addEventListener('input', updateSolar)
+document.getElementById('latInput').addEventListener('input', updateSolar)
+document.getElementById('lngInput').addEventListener('input', updateSolar)
+document.getElementById('scaleSlider').addEventListener('input', updateSolar)
+
 function updateSolar(){
     const lat=parseFloat(document.getElementById('latInput').value)
     const lng=parseFloat(document.getElementById('lngInput').value)
     const hour=parseInt(document.getElementById('hourSlider').value)
     const dateVal=document.getElementById('dateInput').value
-    const scale = parseFloat(document.getElementById('scaleSlider'),value)
+    const scale = parseFloat(document.getElementById('scaleSlider').value)
     const date = dateVal? new Date(dateVal):new Date()
     date.setHours(hour, 0, 0, 0)
 
     const sunPos= SunCalc.getPosition(date, lat, lng)
-    const altitude=(sunPos.altitude*180/Math.Pi).toFixed(1)
-    const azimuth=((sunPos.azimuth+180/Math.Pi)+180).toFixed(1)
+    const altitude=(sunPos.altitude*180/Math.PI).toFixed(1)
+    const azimuth=((sunPos.azimuth*180/Math.PI)+180).toFixed(1)
 
     document.getElementById('outAltitude').textContent=altitude
     document.getElementById('outAzimuth').textContent=azimuth
