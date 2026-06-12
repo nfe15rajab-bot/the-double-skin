@@ -175,7 +175,7 @@ function drawGrid(cols, rows, radius){
             const maxD = radius * Math.sqrt(3)/2 * 0.9
 
             const d = Math.min(maxD, Math.max(radius * 0.1, falloff * radius * starAngle))
-            hexagons.push({ cx: x, cy: y, r:radius, d:d})
+            hexagons.push({ cx: x, cy: y, r: mode ==='hex' ? scaledRadius : radius, d:d})
 
             drawHexagon(x, y, radius, mode)
         }
@@ -249,7 +249,7 @@ function exportSVG(){
     //     //     const cx = col * spacingX + offset
     //     //     const cy = row * spacingY
 
-    const exportScale = 0.5
+    const exportScale = 0.67
     const svg = `<svg xmlns= "http://www.w3.org/2000/svg" width="${canvas.width*exportScale}" height="${canvas.height*exportScale}" viewBox ="0 0 ${canvas.width} ${canvas.height}">
     <rect width ="100%" height ="100%" fill ="rgb(248,23, 90)"/>
     ${paths}</svg>`
