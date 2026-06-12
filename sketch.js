@@ -369,17 +369,28 @@ function updateSolar(){
     const spacingY=radius * 1.5
     const cellAreaPx = spacingX * spacingY
     const hexAreaPx=(3*Math.sqrt(3)/2)*radius*radius
-    const voidRatioPerCell = Math.PI * Math.sqrt(3) / 6
+    // const voidRatioPerCell = Math.PI * Math.sqrt(3) / 6
+
+    const openingPx = hexagons.reduce((sum, hex) => {
+        return sum + (3 * Math.sqrt(3)/2)*hex.r * hex.r
+    }, 0)
+    const totalArea = canvas.width * canvas.height
+    const voidRatioPerCell = Math.min(0.907, openingPx/totalArea)
+    const voidRatio = (voidRatioPerCell*100).toFixed(1)
+
+    const pxToMm = scale
+    const openingAreaMm2 = openingPx *pxToMm * pxToMm
+    const openingCm2 = (openingAreaMm2/100).toFixed(1)
 
     const cols = Math.ceil(canvas.width/spacingX) + 1
     const rows = Math.ceil(canvas.height/spacingY) + 1
     const totalCells = cols * rows
 
-    const pxToMm = scale
-    const totalPanelAreaMm2 = totalCells * cellAreaPx * pxToMm *pxToMm
-    const openingAreaMm2 = totalPanelAreaMm2 * voidRatioPerCell
-    const openingCm2 = (openingAreaMm2 / 100).toFixed(1)
-    const voidRatio = (voidRatioPerCell * 100).toFixed(1)
+    // const pxToMm = scale
+    // const totalPanelAreaMm2 = totalCells * cellAreaPx * pxToMm *pxToMm
+    // const openingAreaMm2 = totalPanelAreaMm2 * voidRatioPerCell
+    // const openingCm2 = (openingAreaMm2 / 100).toFixed(1)
+    //const voidRatio = (voidRatioPerCell * 100).toFixed(1)
 
     const altRad = sunPos.altitude
     const irradiance = altRad>0 ? (1000*Math.sin(altRad)*(voidRatio/100)).toFixed(1):0
