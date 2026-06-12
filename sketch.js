@@ -373,7 +373,34 @@ function updateSolar(){
     drawSunArc(lat, lng, date, parseFloat(altitude), parseFloat(azimuth))
 }
 
-
+document.getElementById('exportJSON').addEventListener('click', function(){
+    const data = {
+        timestamp:new Date().toISOString(),
+        location :{
+            latitude: parseFloat(document.getElementById('latInput').value),
+            longitude: parseFloat(document.getElementById('lngInput').value)
+        },
+        solar : {
+            altitude: document.getElementById('outAltitude').textContent,
+            azimuth: document.getElementById('outAzimuth').textContent
+        },
+        pattern : {
+            mode: mode,
+            radius: radius,
+            sigma:sigma, 
+            voidRatio:document.getElementById('outVoid').textContent,
+            openingAreaCm2: document.getElementById('outArea').textContent,
+            irradianceWm2: document.getElementById('outIrradiance').textContent
+        }
+    }
+    const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'})
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = 'the-double-skin-data.json'
+    a.click()
+    URL.revokeObjectURL(url)
+})
 function animate() {
     if (!frozen){
         pen.clearRect(0, 0, canvas.width, canvas.height)

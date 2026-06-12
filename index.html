@@ -104,10 +104,11 @@
     </head>
     <body>
         <script src="suncalc.js"></script>
-        <button class = "btn" id="calculateBtn">Calculate</button>
+        
         <canvas id="canvas"></canvas>
         <div id="controls" >
             <button id = "toggle"> Mode: Hex</button>
+            
             <div class = "control-group">
                 <label>Sigma: <span id ="sigmaVal">1000</span></label><br>
                 <input type ="range" min="50" max="1500" value = "200" id="sigmaSlider" >
@@ -157,7 +158,7 @@
                 <label>Scale: 1px =<span id="scaleVal">10</span>mm</label>
                 <input type ="range" min="1" max="100" value="10" id="scaleSlider">
             </div>
-
+            <button class = "btn" id="calculateBtn">Calculate</button>
             <canvas id="sunArc" width="180" height="90" style="width:100%; border-radius:6px; margin-top:6px;"></canvas>
             <div id="solarOutput" style="margin-top:8px; font-size:11px; color:rgba(255, 255, 255, 0.7); line-height:1.8;">
                 <div>Altitude: <span id="outAltitude">-</span>°</div>
