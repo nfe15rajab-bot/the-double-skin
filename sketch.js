@@ -271,6 +271,21 @@ function updateSolar(){
     const sunPos= SunCalc.getPosition(date, lat, lng)
     const altitude=(sunPos.altitude*180/Math.Pi).toFixed(1)
     const azimuth=((sunPos.azimuth+180/Math.Pi)+180).toFixed(1)
+
+    document.getElementById('outAltitude').textContent=altitude
+    document.getElementById('outAzimuth').textContent=azimuth
+    document.getElementById('hourVal').textContent=hour
+    document.getElementById('scaleVal').textContent=scale
+
+
+    //void ratio calculations
+    const totalArea = canvas.width * canvas.height
+    const pxToMm=scale
+    const totalAreaMm = totalArea * pxToMm * pxToMm
+    const openingPx = hexagons.reduce((sum, hex)=>sum + (3 * Math.sqrt(3)/2)*hex.r * hex.r, 0)
+    const openingMm2 = openingPx * pxToMm * pxToMm
+    const voidRatio= (openingPx/totalArea * 100).toFixed(1)
+    const openingCm2=(openingMm2/100).toFixed(1)
 }
 function animate() {
     if (!frozen){
