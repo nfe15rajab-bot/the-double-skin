@@ -259,6 +259,57 @@ function exportSVG(){
     URL.revokeObjectURL(url)
 }
 
+function drawSunArc(lat, lng, date, altitude, azimuth){
+    const arcCanvas  = document.getElementById('sunArc')
+    const ctx = arcCanvas.getContext('2d')
+    const w = arcCanvas.width
+    const h = arcCanvas.height
+    
+    ctx.clearRect(0, 0, w, h)
+
+    //background
+    ctx.fillStyle = 'rgba(0,0,0,0.4)'
+    ctx.fillRect(0,0,w,h)
+
+
+    //horizon line
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)'
+    ctx.lineWidth = 1
+    ctx.beginPath()
+    ctx.moveTo(0, h * 0.75)
+    ctx.lineTo(w, h * 0.75)
+    ctx.stroke()
+
+
+    //sun arc 
+    ctx.strokeStyle = 'rgba(251, 146, 60, 0.5)'
+    ctx.lineWidth = 2
+    ctx.beginPath()
+    let first = true
+    for (let h24=0; h24 <= 24; h24++){
+        const d = new DateP(date)
+        d.setHours(h24, 0 , 0 , 0)
+        const pos = SunCalc.getPosition(d, lat, lng)
+        const alt=pos.altitude * 180/Math.PI
+        const az=(pos.azimuth*180/Math.PI + 180)
+        const x = (az/360)*w
+        const y = h*0.75 - (alt/90) * h * 0.7
+        if (first){ ctx.moveTo(x, y); first = false}
+        else ctx.lineTo(x , y)
+    }
+    ctx.stroke()
+
+    //current sun position
+    if (altitude>0){
+        const x = (azimuth/360)*w
+        const y = h * 0.75 - (altitude/90)*h*0.7
+        ctx.beginPath()
+        ctx.arc(x, y, 5, 0, Math.PI * 2)
+        ctx.fillStyle = '#fbbf24'
+        ctx.fill()
+    }
+}
+
 function updateSolar(){
     const lat=parseFloat(document.getElementById('latInput').value)
     const lng=parseFloat(document.getElementById('lngInput').value)
@@ -300,12 +351,16 @@ function updateSolar(){
     const voidRatio= (openingPx/totalArea * 100).toFixed(1)
     const openingCm2=(openingMm2/100).toFixed(1)
 
-    const alrRad = sunPos.altitude
+    const altRad = sunPos.altitude
     const irradiance = altRad>0 ? (1000*Math.sin(altRad)*(voidRatio/100)).toFixed(1):0
     document.getElementById('outVoid').textContent=voidRatio
     document.getElementById('outArea').textContent=openingCm2
     document.getElementById('outIrradiance').textContent=irradiance
+
+    drawSunArc(lat, lng, date, parseFloat(altitude), parseFloat(azimuth))
 }
+
+
 function animate() {
     if (!frozen){
         pen.clearRect(0, 0, canvas.width, canvas.height)
