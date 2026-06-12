@@ -282,10 +282,29 @@ function updateSolar(){
     const totalArea = canvas.width * canvas.height
     const pxToMm=scale
     const totalAreaMm = totalArea * pxToMm * pxToMm
-    const openingPx = hexagons.reduce((sum, hex)=>sum + (3 * Math.sqrt(3)/2)*hex.r * hex.r, 0)
+    const openingPx = hexagons.reduce((sum, hex)=> {
+        if (mode === 'star') {
+            const hexArea = (3 * Math.sqrt(3)/2)*hex.r*hex.r
+            const triangleArea = 0.5*hex.r*hex.d * Math.sin(Math.PI/3)
+            return sum + hexArea - 6 * triangleArea
+
+        } else {
+            return sum + (3 * Math.sqrt(3)/2)*hex.r*hex.r
+        }
+
+    }, 0)
+
+        
+        
     const openingMm2 = openingPx * pxToMm * pxToMm
     const voidRatio= (openingPx/totalArea * 100).toFixed(1)
     const openingCm2=(openingMm2/100).toFixed(1)
+
+    const alrRad = sunPos.altitude
+    const irradiance = altRad>0 ? (1000*Math.sin(altRad)*(voidRatio/100)).toFixed(1):0
+    document.getElementById('outVoid').textContent=voidRatio
+    document.getElementById('outArea').textContent=openingCm2
+    document.getElementById('outIrradiance').textContent=irradiance
 }
 function animate() {
     if (!frozen){
