@@ -25,6 +25,13 @@ window.addEventListener("contextmenu", function(e){
     document.getElementById("freezeBtn").textContent=frozen ? 'Unfreeze': "Freeze"
 })
 
+
+window.getElementById('hourSlider').addEventListener('input', updateSolar)
+window.getElementById('dateInput').addEventListener('input', updateSolar)
+window.getElementById('latInput').addEventListener('input', updateSolar)
+window.getElementById('lngInput').addEventListener('input', updateSolar)
+window.getElementById('scaleSlider').addEventListener('input', updateSolar)
+
 document.getElementById('toggle').addEventListener('click', function(){
     mode = mode ==='hex' ? 'star' : 'hex'
     this.textContent = mode === 'hex' ? 'Mode: Hex' : 'Mode: Star'
