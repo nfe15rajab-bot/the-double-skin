@@ -10,6 +10,10 @@ let sigma = 500
 let radius = 150
 let starAngle = 0.5
 
+let solarMode = false 
+let attractorX=0
+let attractorY=0
+
 let hexagons = []
 canvas.width = window.innerWidth
 canvas.height= window.innerHeight
@@ -60,14 +64,23 @@ document.getElementById('freezeBtn').addEventListener('click', function(){
     this.textContent = frozen ?' ▶️ Unfreeze' : '❄️ Freeze'
 })
 
+document.getElementById('solarModeBtn').addEventListener('click', function(){
+    solarMode=!solarMode
+    this.textContent=solarMode ? 'Solar Mode:On':'Solar Mode:Off'
+    this.style.background=solarMode?'rgba(251, 146, 60, 0.4)' : 'rgba(255, 255, 255, 0.1)'
+})
+
 let surfaceColor = 'rgb(255, 255, 255)'
 
 
 canvas.addEventListener('mousemove', function(e){
     const rect = canvas.getBoundingClientRect()
-    mouseX=e.clientX - rect.left
-    mouseY=e.clientY - rect.top }
-)
+    if (!solarMode){
+        attractorX=e.clientX - rect.left
+        attractorY=e.clientY - rect.top 
+    }
+    
+})
 function drawStarHex(cx, cy, radius, d){
     const corners=[]
     for (let i = 0; i<6; i++){
@@ -114,8 +127,8 @@ function drawStarHex(cx, cy, radius, d){
     }
 
 function drawHexagon(cx, cy, radius){
-    const dx = cx - mouseX
-    const dy = cy - mouseY
+    const dx = cx - attractorX
+    const dy = cy - attractorY
     const dist = Math.sqrt(dx * dx  + dy * dy)
     const falloff = Math.exp(-(dist * dist)/(2* sigma * sigma))
 
@@ -164,8 +177,8 @@ function drawGrid(cols, rows, radius){
             const x =col * spacingX+offset
             const y =row * spacingY
 
-            const dx = x- mouseX
-            const dy = y- mouseY
+            const dx = x- attractorX
+            const dy = y- attractorY
 
             const dist = Math.sqrt (dx * dx + dy * dy)
             const falloff = Math.exp(-(dist*dist)/(2*sigma*sigma))
@@ -399,6 +412,17 @@ function updateSolar(){
     document.getElementById('outIrradiance').textContent=irradiance
 
     drawSunArc(lat, lng, date, parseFloat(altitude), parseFloat(azimuth))
+
+    const sunAzimuthDeg = (sunPos.azimuth * 180/Math.PI) + 180
+    const sunAltitudeDeg = sunPos.altitude * 180 / Math.PI
+
+    if (solarMode && sunAltitudeDeg >0){
+        attractorX = (sunAzimuthDeg/360)*canvas.width
+        attractorY =canvas.height - (sunAltitudeDeg/90)*canvas.height
+    } else if(solarMode) {
+        attractorX = -9999
+        attractorY = -9999
+    }
 }
 
 document.getElementById('exportJSON').addEventListener('click', function(){
