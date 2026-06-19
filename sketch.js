@@ -72,7 +72,7 @@ document.getElementById('solarModeBtn').addEventListener('click', function(){
 
 let surfaceColor = 'rgb(255, 255, 255)'
 
-
+document.getElementById('exportDXFBtn').addEventListener('click', exportDXF)
 canvas.addEventListener('mousemove', function(e){
     const rect = canvas.getBoundingClientRect()
     if (!solarMode){
@@ -453,6 +453,71 @@ document.getElementById('exportJSON').addEventListener('click', function(){
     a.click()
     URL.revokeObjectURL(url)
 })
+
+function exportDXF(){
+    const scale = parseFloat(document.getElementById('scaleSlider').value)
+    let entities=''
+
+    for (const hex of hexagons){
+        let points = []
+        if (mode === 'star'){
+            const corners = []
+            for (let i=0; i<6; i++){
+                const angle=(Math.PI/180)*(60*i-30)
+                corners.push({
+                    x: hex.cx + radius *Math.cos(angle),
+                    y: hex.cy + radius *Math.sin(angle)
+                })
+            }
+                const mids = []
+                for (let i = 0; i<6; i++){
+                    const a = corners[i]
+                    const b= corners[(i+1)%6]
+                    const mx=(a.x + b.x)/2
+                    const my=(a.y + b.y)/2
+                    const ddx = hex.cx - mx
+                    const ddy = hex.cy - my
+                    const dist = Math.sqrt(ddx*ddx + ddy*ddy)
+                    mids.push({
+                        x: mx + (ddx/dist)*hex.d,
+                        y: my + (ddy/dist)*hex.d
+                    })
+                }
+                for (let i=0; i<6; i++){
+                    points.push(corners[i])
+                    points.push(mids[i])
+                }
+                
+            
+        }else{
+            for (let i=0; i<6; i++){
+                const angle = (Math.PI/180)*(60*i-30)
+                points.push({
+                    x: hex.cx + hex.r * Math.cos(angle),
+                    y: hex.cy + hex.r * Math.sin(angle)
+                })
+            }
+        }
+        const pts = points.map(p => ({
+            x: (p.x * scale).toFixed(4), 
+            y:(p.y * scale).toFixed(4)
+        }))
+
+        entities += `0\nLWPOLYLINE\n8\n0\n70\n1\n90\n${pts.length}\n`
+        for (const pt of pts){
+            entities += `10\n${pt.x}\n20\n${pt.y}\n`
+        }        
+    }
+    const dxf = `0\nSECTION\n2\nENTITIES\n${entities}0\nENDSEC\n0\nEOF`
+    const blob= new Blob([dxf], {type: 'application/dxf'})
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download= 'the-double-skin.dxf'
+    a.click()
+    URL.revokeObjectURL(url)
+}
+
 function animate() {
     if (!frozen){
         pen.clearRect(0, 0, canvas.width, canvas.height)
