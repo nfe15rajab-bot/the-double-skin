@@ -411,6 +411,15 @@ function updateSolar(){
     document.getElementById('outArea').textContent=openingCm2
     document.getElementById('outIrradiance').textContent=irradiance
 
+    const pxToM = scale / 1000
+    const cellWidthM=(radius*Math.sqrt(3)*pxToM).toFixed(2)
+    const gridWidthM = (canvas.width * pxToM).toFixed(2)
+    const gridHeightM = (canvas.height * pxToM).toFixed(2)
+
+    document.getElementById('outCellWidth').textContent = cellWidthM
+    document.getElementById('outGridWidth').textContent = gridWidthM
+    document.getElementById('outGridHeight').textContent = gridHeightM
+
     drawSunArc(lat, lng, date, parseFloat(altitude), parseFloat(azimuth))
 
     const sunAzimuthDeg = (sunPos.azimuth * 180/Math.PI) + 180
