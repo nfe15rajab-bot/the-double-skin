@@ -448,7 +448,10 @@ document.getElementById('exportJSON').addEventListener('click', function(){
         pattern : {
             mode: mode,
             radius: radius,
-            sigma:sigma, 
+            sigma:sigma,
+            scaleMMperPX: parseFloat (document.getElementById('scaleVal').textContent),
+            gridWidthM:document.getElementById('outGridWidth').textContent,
+            gridHeightM: document.getElementById('outGridHeight').textContent, 
             voidRatio:document.getElementById('outVoid').textContent,
             openingAreaCm2: document.getElementById('outArea').textContent,
             irradianceWm2: document.getElementById('outIrradiance').textContent
@@ -518,6 +521,9 @@ function exportDXF(){
         }        
     }
     const dxf = `0\nSECTION\n2\nHEADER\n9\n$INSUNITS\n70\n4\n0\nENDSEC\n0\nSECTION\n2\nENTITIES\n${entities}0\nENDSEC\n0\nEOF`
+    // const isFullSize = Math.abs(hex.r - radius)<0.1
+    // const layerName = isFullSize ? 'reference_grid':'scaled_pattern'
+    // entities += `0\nLWPOLYLINE\n8\n${layerName}\n70\n1\n90\n${pts.length}\n`
     const blob= new Blob([dxf], {type: 'application/dxf'})
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
