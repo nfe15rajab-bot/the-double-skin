@@ -517,7 +517,7 @@ function exportDXF(){
             entities += `10\n${pt.x}\n20\n${pt.y}\n`
         }        
     }
-    const dxf = `0\nSECTION\n2\nENTITIES\n${entities}0\nENDSEC\n0\nEOF`
+    const dxf = `0\nSECTION\n2\nHEADER\n9\n$INSUNITS\n70\n4\n0\nENDSEC\n0\nSECTION\n2\nENTITIES\n${entities}0\nENDSEC\n0\nEOF`
     const blob= new Blob([dxf], {type: 'application/dxf'})
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
